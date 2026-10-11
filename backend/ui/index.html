@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AndroMITM — Dashboard</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<!-- ═══════════════ Porte d'autorisation ═══════════════ -->
+<div id="auth-gate" class="gate hidden">
+  <div class="gate-card">
+    <div class="gate-logo">_AndroMITM_</div>
+    <h1 data-i18n="auth.title"></h1>
+    <p class="gate-statement" id="auth-statement"></p>
+    <label class="gate-check">
+      <input type="checkbox" id="auth-checkbox">
+      <span data-i18n="auth.confirm"></span>
+    </label>
+    <div class="gate-actions">
+      <button id="auth-accept" class="btn btn-primary" disabled data-i18n="auth.accept"></button>
+      <button id="auth-decline" class="btn" data-i18n="auth.decline"></button>
+    </div>
+    <p class="gate-foot" data-i18n="auth.foot"></p>
+  </div>
+</div>
+
+<!-- ═══════════════ Application ═══════════════ -->
+<div id="app" class="app">
+  <aside class="sidebar">
+    <div class="brand">Andro<span>MITM</span><span id="sim-badge" class="badge-sim hidden">SIM</span></div>
+    <nav>
+      <a href="#/dashboard" data-i18n="nav.dashboard" class="active"></a>
+      <a href="#/discovery" data-i18n="nav.discovery"></a>
+      <a href="#/arp" data-i18n="nav.arp"></a>
+      <a href="#/dns" data-i18n="nav.dns"></a>
+      <a href="#/proxy" data-i18n="nav.proxy"></a>
+      <a href="#/capture" data-i18n="nav.capture"></a>
+      <a href="#/sessions" data-i18n="nav.sessions"></a>
+      <a href="#/settings" data-i18n="nav.settings"></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="profile" id="profile-label"></div>
+      <button id="lang-toggle" class="btn btn-mini">FR / EN</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="page-title"></h1>
+      <div class="topbar-right">
+        <span id="ws-status" class="dot dot-off" title="WebSocket"></span>
+        <span id="session-badge" class="badge-session hidden"></span>
+        <button id="btn-session-start" class="btn btn-mini btn-primary" data-i18n="session.start"></button>
+        <button id="btn-session-stop" class="btn btn-mini" data-i18n="session.stop"></button>
+      </div>
+    </header>
+
+    <!-- ─── Dashboard ─── -->
+    <section id="page-dashboard" class="page">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2 data-i18n="dash.profile"></h2>
+          <div id="dash-profile" class="kv"></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="dash.modules"></h2>
+          <div id="dash-modules" class="module-chips"></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="dash.targets"></h2>
+          <div id="dash-targets" class="targets-mini"></div>
+        </div>
+        <div class="card card-live">
+          <h2 data-i18n="dash.live"></h2>
+          <div id="event-feed" class="feed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Découverte ─── -->
+    <section id="page-discovery" class="page hidden">
+      <div class="card">
+        <h2 data-i18n="disc.config"></h2>
+        <div class="form-row">
+          <label data-i18n="disc.iface"></label>
+          <select id="disc-iface"></select>
+        </div>
+        <div class="form-row">
+          <label data-i18n="disc.cidr"></label>
+          <input id="disc-cidr" placeholder="192.168.1.0/24">
+        </div>
+        <div class="form-row">
+          <label data-i18n="disc.interval"></label>
+          <input id="disc-interval" type="number" min="15" value="60">
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" data-module="discovery" data-action="start" data-i18n="common.start"></button>
+          <button class="btn" data-module="discovery" data-action="stop" data-i18n="common.stop"></button>
+        </div>
+      </div>
+      <div class="card">
+        <h2 data-i18n="disc.hosts"></h2>
+        <div class="table-wrap"><table id="targets-table">
+          <thead><tr>
+            <th data-i18n="th.ip"></th><th data-i18n="th.mac"></th><th data-i18n="th.vendor"></th>
+            <th data-i18n="th.hostname"></th><th data-i18n="th.android"></th><th data-i18n="th.lastSeen"></th><th></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ─── Modules attaque (ARP / DNS / Proxy / Capture) — générés ─── -->
+    <section id="page-arp" class="page hidden"><div id="mod-arp" class="module-panel"></div></section>
+    <section id="page-dns" class="page hidden"><div id="mod-dns" class="module-panel"></div></section>
+    <section id="page-proxy" class="page hidden"><div id="mod-proxy" class="module-panel"></div></section>
+    <section id="page-capture" class="page hidden"><div id="mod-capture" class="module-panel"></div></section>
+
+    <!-- ─── Sessions ─── -->
+    <section id="page-sessions" class="page hidden">
+      <div class="card">
+        <h2 data-i18n="sess.list"></h2>
+        <div class="table-wrap"><table id="sessions-table">
+          <thead><tr><th data-i18n="th.name"></th><th data-i18n="th.started"></th><th data-i18n="th.ended"></th><th></th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <div class="actions">
+          <button id="btn-refresh-sessions" class="btn" data-i18n="common.refresh"></button>
+        </div>
+      </div>
+      <div class="card hidden" id="report-card">
+        <h2 data-i18n="report.title"></h2>
+        <div id="report-stats" class="kv"></div>
+        <div class="actions">
+          <a id="report-link" class="btn btn-primary" target="_blank" data-i18n="report.open"></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Paramètres ─── -->
+    <section id="page-settings" class="page hidden">
+      <div class="card">
+        <h2 data-i18n="set.install"></h2>
+        <div id="set-deps" class="deps"></div>
+        <p class="hint" data-i18n="set.installHint"></p>
+        <pre class="code" id="set-install-cmd">bash scripts/install-termux.sh</pre>
+      </div>
+      <div class="card">
+        <h2 data-i18n="set.backup"></h2>
+        <p class="hint" data-i18n="set.backupHint"></p>
+        <pre class="code">bash scripts/drive-sync.sh</pre>
+        <pre class="code">bash scripts/git-push.sh</pre>
+      </div>
+      <div class="card">
+        <h2 data-i18n="set.legal"></h2>
+        <p class="hint" data-i18n="set.legalText"></p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- modal générique -->
+<div id="modal" class="modal hidden"><div class="modal-card"><p id="modal-text"></p><div class="modal-actions"><button id="modal-ok" class="btn btn-primary">OK</button></div></div></div>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

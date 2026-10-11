@@ -1,0 +1,165 @@
+/* AndroMITM — thème sombre style Kali, mobile-first (Termux + navigateur) */
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2230;
+  --border: #30363d;
+  --txt: #c9d1d9;
+  --txt-dim: #8b949e;
+  --accent: #36f36f;          /* vert Kali */
+  --accent-dim: #36f36f22;
+  --blue: #58a6ff;
+  --red: #f85149;
+  --amber: #d29922;
+  --radius: 10px;
+  --mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--txt);
+  font-family: var(--mono); font-size: 14px;
+}
+.hidden { display: none !important; }
+
+/* ─── Porte d'autorisation ─── */
+.gate {
+  position: fixed; inset: 0; z-index: 100;
+  background: radial-gradient(1200px 600px at 50% 0%, #10261a 0%, var(--bg) 60%);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+.gate-card {
+  max-width: 560px; width: 100%;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+}
+.gate-logo { color: var(--accent); font-size: 22px; letter-spacing: 2px; margin-bottom: 1rem; }
+.gate-card h1 { font-size: 18px; margin: 0 0 1rem; }
+.gate-statement {
+  background: var(--bg3); border-left: 3px solid var(--amber);
+  padding: 1rem; font-size: 13px; line-height: 1.6; color: var(--txt);
+}
+.gate-check { display: flex; gap: .6rem; align-items: flex-start; margin: 1.2rem 0; cursor: pointer; }
+.gate-actions { display: flex; gap: .8rem; }
+.gate-foot { color: var(--txt-dim); font-size: 11px; margin-top: 1.2rem; line-height: 1.5; }
+
+/* ─── Layout ─── */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 210px; flex-shrink: 0; background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+}
+.brand { padding: 1.1rem 1.2rem; font-size: 17px; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+.brand span:last-of-type { color: var(--accent); }
+.badge-sim { background: var(--amber); color: #000; font-size: 10px; border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+.sidebar nav { flex: 1; padding: .6rem 0; }
+.sidebar nav a {
+  display: block; padding: .65rem 1.2rem; color: var(--txt-dim);
+  text-decoration: none; border-left: 3px solid transparent; font-size: 13px;
+}
+.sidebar nav a:hover { color: var(--txt); background: var(--bg3); }
+.sidebar nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-dim); }
+.sidebar-foot { padding: 1rem 1.2rem; border-top: 1px solid var(--border); }
+.profile { color: var(--txt-dim); font-size: 11px; margin-bottom: .6rem; }
+
+.main { flex: 1; min-width: 0; padding: 0 1.2rem 3rem; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 0; border-bottom: 1px solid var(--border); margin-bottom: 1.2rem;
+}
+.topbar h1 { font-size: 16px; margin: 0; color: var(--blue); }
+.topbar-right { display: flex; align-items: center; gap: .7rem; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot-on { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.dot-off { background: var(--red); }
+.badge-session { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); font-size: 11px; border-radius: 6px; padding: 2px 8px; }
+
+/* ─── Grille & cartes ─── */
+.grid { display: grid; gap: 1rem; margin-bottom: 1.2rem; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.1rem 1.3rem; margin-bottom: 1rem;
+}
+.card h2 { font-size: 13px; color: var(--blue); margin: 0 0 .9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ─── Formulaires ─── */
+.form-row { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .8rem; }
+.form-row label { font-size: 12px; color: var(--txt-dim); }
+input, select, textarea {
+  background: var(--bg); border: 1px solid var(--border); color: var(--txt);
+  border-radius: 6px; padding: .55rem .7rem; font-family: var(--mono); font-size: 13px;
+}
+input:focus, select:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+.actions { display: flex; gap: .7rem; margin-top: 1rem; flex-wrap: wrap; }
+
+.btn {
+  background: var(--bg3); color: var(--txt); border: 1px solid var(--border);
+  border-radius: 6px; padding: .5rem 1rem; cursor: pointer; font-family: var(--mono); font-size: 13px;
+  transition: all .15s;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.btn-mini { padding: .3rem .7rem; font-size: 12px; }
+.btn-danger { border-color: var(--red); color: var(--red); }
+
+/* ─── Tableaux ─── */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; white-space: nowrap; }
+th { background: var(--bg3); color: var(--txt-dim); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+tr:nth-child(even) { background: var(--bg3); }
+.tag-android { color: var(--accent); font-weight: bold; }
+
+/* ─── Flux d'événements ─── */
+.feed {
+  height: 300px; overflow-y: auto; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 6px; padding: .6rem;
+  font-size: 12px; line-height: 1.55;
+}
+.feed .ev { display: flex; gap: .5rem; padding: 1px 0; }
+.feed .ev .t { color: var(--txt-dim); flex-shrink: 0; }
+.feed .ev .m { color: var(--blue); flex-shrink: 0; min-width: 72px; }
+.feed .ev.warn .msg { color: var(--amber); }
+.feed .ev.error .msg { color: var(--red); }
+.feed .ev.info .msg { color: var(--txt); }
+.module-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip {
+  border: 1px solid var(--border); border-radius: 20px; padding: .3rem .8rem; font-size: 12px;
+}
+.chip.running { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.chip.error { border-color: var(--red); color: var(--red); }
+.targets-mini { font-size: 12px; line-height: 1.7; }
+.kv { font-size: 13px; line-height: 1.9; }
+.kv b { color: var(--blue); display: inline-block; min-width: 130px; }
+.deps .dep { display: flex; justify-content: space-between; padding: .35rem 0; border-bottom: 1px dashed var(--border); font-size: 12px; }
+.deps .dep.ok .state { color: var(--accent); }
+.deps .dep.missing .state { color: var(--red); }
+.hint { color: var(--txt-dim); font-size: 12px; line-height: 1.6; }
+.code {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  padding: .6rem .8rem; font-size: 12px; overflow-x: auto; white-space: pre;
+}
+
+/* ─── Problèmes module ─── */
+.problems { margin: .8rem 0 0; padding: 0; list-style: none; }
+.problems li { font-size: 12px; color: var(--amber); padding: .25rem 0; }
+.problems li::before { content: '⚠ '; }
+
+/* ─── Modal ─── */
+.modal { position: fixed; inset: 0; background: #000a; display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; max-width: 420px; }
+.modal-actions { margin-top: 1rem; text-align: right; }
+
+/* ─── Responsive (téléphone) ─── */
+@media (max-width: 760px) {
+  .app { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; flex-direction: column; }
+  .sidebar nav { display: flex; overflow-x: auto; padding: 0; }
+  .sidebar nav a { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .sidebar nav a.active { border-bottom-color: var(--accent); }
+  .main { padding: 0 .8rem 2rem; }
+  .feed { height: 220px; }
+}
