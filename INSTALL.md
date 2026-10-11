@@ -67,13 +67,35 @@ cd electron && npm install && npx electron . --url http://<IP-du-téléphone>:84
 ```
 Le backend Termux doit écouter sur le LAN : `ANDROMITM_HOST=0.0.0.0 node backend/server.js` — uniquement sur un réseau de labo, jamais sur un Wi-Fi public.
 
+## 4bis. Applications Android (APK)
+
+Téléchargement : dossier [`releases/`](releases/) du repo ou page [Releases GitHub](../../releases) (aussi sur `gdrive:releases/`).
+
+### Installer une APK sur le téléphone
+1. Copier le fichier `.apk` sur le téléphone (câble, Drive, …).
+2. Ouvrir le fichier → Android demande d'autoriser « Installer des apps inconnues » pour l'appli Fichiers/navigateur → autoriser.
+3. Installer. Les deux APK partagent la même signature (`andromitm`) : les mises à jour se font par-dessus, sans désinstallation.
+
+### AndroMITM-v0.2.0.apk — cockpit MITM natif
+- Déclaration d'usage autorisé au premier lancement, puis cockpit 3 onglets (Pilotage / Cibles / Journal).
+- Lance bettercap v2.25 embarqué via `su` : **nécessite un appareil rooté** (voir RootWizard).
+- Appareils 64-bits-only : régler « chemin moteur custom » vers un bettercap aarch64.
+
+### RootWizard-v0.1.0.apk — root guidé (Blackview Xplore1 / Android 15)
+- Détecte l'état : bootloader (verrouillé/orange), OEM unlocking, débogage USB, Magisk, root actif.
+- Guide pas à pas : sauvegarde → options développeur → déverrouillage bootloader (PC + fastboot, **efface les données**) → récupération d'`init_boot.img` (firmware Blackview exact) → patch Magisk v27+ → `fastboot flash init_boot` → vérification + test de root intégré.
+- Adaptatif : MediaTek (mtkclient en plan B), Unisoc, Qualcomm.
+- ⚠ Aucune APK ne peut rooter Android 15 en un clic réel ; RootWizard l'affiche et automatise le reste.
+
 ## 5. Sauvegardes
+
+**Une commande après chaque jalon : `bash scripts/sync-all.sh "message"`** (GitHub + Drive enchaînés).
 
 ### Drive (rclone)
 ```bash
 # une fois : copier rclone/rclone.conf.example vers ~/.config/rclone/rclone.conf et remplir les tokens
 rclone lsd gdrive:                # test
-bash scripts/drive-sync.sh        # archive versionnée + sync + RESTART.md
+bash scripts/drive-sync.sh        # env + archive versionnée + releases/ + data/ + RESTART.md
 ```
 
 ### GitHub

@@ -23,6 +23,14 @@ __pycache__/
 # --- APK (build Android) ---
 apk/.gradle/
 apk/app/build/
+apk-rootwizard/build/
+apk-rootwizard/local.properties
 apk/local.properties
 *.apk
+!releases/*.apk
+!releases/*.idsig
 *.keystore
+
+# --- Artefacts sauvegardés sur Drive uniquement (pas GitHub) ---
+backup/
+env/

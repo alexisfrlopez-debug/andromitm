@@ -57,10 +57,32 @@ npm run electron                # coquille Electron optionnelle
 | Android non rooté (reconnaissance + analyse) | Termux | discovery, dashboard, rapports, proxy explicite |
 | Démo / apprentissage sans matériel | partout | `ANDROMITM_SIM=1` : moteur factice |
 
-## Sauvegardes incrémentielles
+## Applications Android (APK)
 
-- **GitHub** : `bash scripts/git-push.sh "message"` (PAT lu dans `.env` ou `tokens/token_git.txt`, jamais commité)
-- **Drive** : `bash scripts/drive-sync.sh` (rclone — archive versionnée + sync + RESTART.md à la racine)
+Deux APK signées (keystore `andromitm`, SHA-256 cert `df934caa…`) — dans [`releases/`](releases/) et en pièce-jointe de la page [Releases GitHub](../../releases) :
+
+| APK | Rôle |
+|---|---|
+| `AndroMITM-v0.2.0.apk` | **Cockpit MITM natif** (Material 3, FR/EN) : moteur bettercap v2.25 embarqué (armv7 + libusb), découverte live, ARP/DNS/sniff par switches, cibles au doigt, journal live, restauration ip_forward. Paramètre « chemin moteur custom » pour les appareils 64-bits-only. |
+| `RootWizard-v0.1.0.apk` | **Assistant de root guidé** (ciblé Blackview Xplore1 · DokeOS 4.2 · Android 15, adaptatif MTK/Unisoc/Qualcomm) : détection d'état (bootloader, OEM unlock, USB debug, Magisk, root), raccourcis Paramètres, liens officiels (firmware Blackview, Magisk v27+), commandes adb/fastboot copiables, test de root intégré. |
+
+> ⚠ **Honnêteté technique** : aucune APK ne peut rooter Android 15 « en un vrai clic » (pas d'exploit universel public) — les apps qui le prétendent sont des arnaques/malwares. RootWizard automatise tout ce qui est faisable depuis le téléphone ; le déverrouillage du bootloader et le flash exigent un PC (ou un second téléphone en OTG). C'est le prérequis pour rooter le téléphone et débloquer les modules d'attaque.
+
+Sources : `apk/` (Gradle) et `apk-rootwizard/` (build aapt2/javac/d8 via `scripts/build-rootwizard.sh`). Empreintes : `releases/SHA256SUMS.txt`.
+
+## Sauvegardes systématiques (GitHub + Drive)
+
+**Une seule commande après chaque jalon :**
+```bash
+bash scripts/sync-all.sh "message du jalon"
+```
+- **GitHub** : commit + push (`git-push.sh`, PAT lu dans `.env` ou `tokens/token_git.txt`, jamais commité)
+- **Drive** (`drive-sync.sh`, rclone) :
+  - snapshot d'environnement → `env/` (inclus dans l'archive)
+  - archive versionnée → `gdrive:backup/` (ancienne version conservée dans `old/`)
+  - APK signées + SHA256 → `gdrive:releases/`
+  - sessions & rapports runtime → `gdrive:data/`
+  - `RESTART.md` → racine du dossier de travail
 - Config rclone modèle : `rclone/rclone.conf.example`
 
 ## Documentation
@@ -72,7 +94,7 @@ npm run electron                # coquille Electron optionnelle
 
 ## English summary
 
-AndroMITM is a GUI-based MITM pentest suite for Android engagements: Node.js backend (Termux or desktop), dark Kali-style web dashboard (FR/EN), optional Electron shell. Modules: network discovery (nmap), ARP spoofing (bettercap/arpspoof), DNS spoofing, HTTPS interception (mitmproxy), pcap capture (tcpdump), session reporting. **Authorized use only** — an in-app statement must be accepted before attack modules unlock. See [docs/usage-en.md](docs/usage-en.md).
+AndroMITM is a GUI-based MITM pentest suite for Android engagements: Node.js backend (Termux or desktop), dark Kali-style web dashboard (FR/EN), optional Electron shell. Modules: network discovery (nmap), ARP spoofing (bettercap/arpspoof), DNS spoofing, HTTPS interception (mitmproxy), pcap capture (tcpdump), session reporting. **Two signed APKs ship in [releases/](releases/)**: the native bettercap cockpit (FR/EN) and RootWizard, a guided rooting assistant (Blackview Xplore1 / Android 15 — no app can truly one-click root modern Android; the wizard automates everything possible on-device). **Authorized use only** — an in-app statement must be accepted before attack modules unlock. See [docs/usage-en.md](docs/usage-en.md).
 
 ## Licence
 
