@@ -46,6 +46,11 @@ public class MainActivity extends Activity {
     Handler ui;
     TextView tvModel, tvAndroid, tvRom, tvSoc, socNote;
     TextView stBoot, stOem, stAdb, stMagisk, stRoot;
+    LinearLayout stepsBox;
+    Button pbAuto, pbStd, pbXiaomi;
+    String prefProfile = "auto";
+    int profile = P_STD;
+    static final int P_STD = 0, P_XIAOMI = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,9 @@ public class MainActivity extends Activity {
         w.setStatusBarColor(C_BG);
         w.setNavigationBarColor(C_BG);
         setContentView(buildUi());
+        prefProfile = getSharedPreferences("rw", Context.MODE_PRIVATE)
+                .getString("profile", "auto");
+        applyProfile();
         refresh();
     }
 
@@ -99,6 +107,40 @@ public class MainActivity extends Activity {
         root.addView(dev);
         root.addView(gap(12));
 
+        LinearLayout pr = card(C_LINE);
+        pr.addView(title(L10n.s("p_title"), 17, C_ACCENT, true));
+        pr.addView(gap(6));
+        LinearLayout prow = new LinearLayout(this);
+        prow.setOrientation(LinearLayout.HORIZONTAL);
+        pbAuto = miniButton(L10n.s("p_auto"));
+        pbStd = miniButton(L10n.s("p_std"));
+        pbXiaomi = miniButton(L10n.s("p_xiaomi"));
+        pbAuto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { selectProfile("auto"); }
+        });
+        pbStd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { selectProfile("std"); }
+        });
+        pbXiaomi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { selectProfile("xiaomi"); }
+        });
+        LinearLayout.LayoutParams lpA = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        lpA.rightMargin = dp(4);
+        LinearLayout.LayoutParams lpB = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        lpB.leftMargin = dp(4); lpB.rightMargin = dp(4);
+        LinearLayout.LayoutParams lpC = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        lpC.leftMargin = dp(4);
+        prow.addView(pbAuto, lpA);
+        prow.addView(pbStd, lpB);
+        prow.addView(pbXiaomi, lpC);
+        pr.addView(prow, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        root.addView(pr);
+        root.addView(gap(12));
+
         LinearLayout st = card(C_LINE);
         st.addView(title(L10n.s("status_title"), 17, C_ACCENT, true));
         stBoot = addStatusRow(st, L10n.s("st_boot"));
@@ -113,46 +155,143 @@ public class MainActivity extends Activity {
         root.addView(st);
         root.addView(gap(14));
 
-        root.addView(stepCard("0", L10n.s("s0_t"), L10n.s("s0_b"), null, null));
-        root.addView(stepCard("1", L10n.s("s1_t"), L10n.s("s1_b"), null, null));
-        root.addView(stepCard("2", L10n.s("s2_t"), L10n.s("s2_b"),
-                new String[]{L10n.s("btn_open_dev")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { openDevSettings(); }
-                }}));
-        root.addView(stepCard("3", L10n.s("s3_t"), L10n.s("s3_b"),
-                new String[]{L10n.s("btn_copy")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { copy("andromitm-unlock", L10n.s("cmds_3")); }
-                }}));
-        root.addView(stepCard("4", L10n.s("s4_t"), L10n.s("s4_b"),
-                new String[]{L10n.s("btn_blackview")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { openUrl("https://www.blackview.hk/"); }
-                }}));
-        root.addView(stepCard("5", L10n.s("s5_t"), L10n.s("s5_b"),
-                new String[]{L10n.s("btn_magisk"), L10n.s("btn_open_magisk")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { openUrl("https://github.com/topjohnwu/Magisk/releases"); }
-                }, new View.OnClickListener() {
-                    public void onClick(View v) { openMagisk(); }
-                }}));
-        root.addView(stepCard("6", L10n.s("s6_t"), L10n.s("s6_b"),
-                new String[]{L10n.s("btn_copy")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { copy("andromitm-flash", L10n.s("cmds_6")); }
-                }}));
-        root.addView(stepCard("7", L10n.s("s7_t"), L10n.s("s7_b"),
-                new String[]{L10n.s("btn_test_root")},
-                new View.OnClickListener[]{new View.OnClickListener() {
-                    public void onClick(View v) { testRoot(); }
-                }}));
+        stepsBox = new LinearLayout(this);
+        stepsBox.setOrientation(LinearLayout.VERTICAL);
+        root.addView(stepsBox);
 
         root.addView(gap(14));
         LinearLayout foot = card(C_LINE);
         foot.addView(body(L10n.s("footer"), C_MUT));
         root.addView(foot);
         return sv;
+    }
+
+    // ════════════════════ profils & étapes ════════════════════
+
+    void selectProfile(String p) {
+        prefProfile = p;
+        getSharedPreferences("rw", Context.MODE_PRIVATE).edit().putString("profile", p).apply();
+        applyProfile();
+    }
+
+    void applyProfile() {
+        profile = resolveProfile();
+        updateProfileButtons();
+        fillSteps();
+    }
+
+    int resolveProfile() {
+        if ("xiaomi".equals(prefProfile)) return P_XIAOMI;
+        if ("std".equals(prefProfile)) return P_STD;
+        String b = (Build.MANUFACTURER + " " + Build.BRAND + " " + Build.MODEL).toLowerCase();
+        return (b.contains("xiaomi") || b.contains("redmi") || b.contains("poco"))
+                ? P_XIAOMI : P_STD;
+    }
+
+    void updateProfileButtons() {
+        paintProfile(pbAuto, "auto".equals(prefProfile));
+        paintProfile(pbStd, "std".equals(prefProfile));
+        paintProfile(pbXiaomi, "xiaomi".equals(prefProfile));
+    }
+
+    void paintProfile(Button b, boolean active) {
+        GradientDrawable g = new GradientDrawable();
+        g.setCornerRadius(dp(10));
+        if (active) {
+            g.setColor(C_ACCENT);
+            b.setTextColor(C_BG);
+        } else {
+            g.setColor(C_CARD);
+            g.setStroke(dp(1), C_ACCENT);
+            b.setTextColor(C_TXT);
+        }
+        b.setBackground(g);
+    }
+
+    Button miniButton(String label) {
+        Button b = new Button(this);
+        b.setText(label);
+        b.setAllCaps(false);
+        b.setTextSize(13);
+        b.setTypeface(null, Typeface.BOLD);
+        b.setPadding(dp(8), dp(6), dp(8), dp(6));
+        return b;
+    }
+
+    void fillSteps() {
+        stepsBox.removeAllViews();
+        if (profile == P_XIAOMI) {
+            stepsBox.addView(stepCard("0", L10n.s("x0_t"), L10n.s("x0_b"), null, null));
+            stepsBox.addView(stepCard("1", L10n.s("x1_t"), L10n.s("x1_b"), null, null));
+            stepsBox.addView(stepCard("2", L10n.s("x2_t"), L10n.s("x2_b"),
+                    new String[]{L10n.s("btn_open_dev")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openDevSettings(); }
+                    }}));
+            stepsBox.addView(stepCard("3", L10n.s("x3_t"), L10n.s("x3_b"), null, null));
+            stepsBox.addView(stepCard("4", L10n.s("x4_t"), L10n.s("x4_b"),
+                    new String[]{L10n.s("btn_miunlock")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openUrl("https://en.miui.com/unlock/"); }
+                    }}));
+            stepsBox.addView(stepCard("5", L10n.s("x5_t"), L10n.s("x5_b"),
+                    new String[]{L10n.s("btn_fw_xiaomi")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openUrl("https://xmfirmwareupdater.com/"); }
+                    }}));
+            stepsBox.addView(stepCard("6", L10n.s("x6_t"), L10n.s("x6_b"),
+                    new String[]{L10n.s("btn_magisk"), L10n.s("btn_open_magisk")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openUrl("https://github.com/topjohnwu/Magisk/releases"); }
+                    }, new View.OnClickListener() {
+                        public void onClick(View v) { openMagisk(); }
+                    }}));
+            stepsBox.addView(stepCard("7", L10n.s("x7_t"), L10n.s("x7_b"),
+                    new String[]{L10n.s("btn_copy")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { copy("andromitm-flash", L10n.s("cmds_6")); }
+                    }}));
+            stepsBox.addView(stepCard("8", L10n.s("x8_t"), L10n.s("x8_b"),
+                    new String[]{L10n.s("btn_test_root")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { testRoot(); }
+                    }}));
+        } else {
+            stepsBox.addView(stepCard("0", L10n.s("s0_t"), L10n.s("s0_b"), null, null));
+            stepsBox.addView(stepCard("1", L10n.s("s1_t"), L10n.s("s1_b"), null, null));
+            stepsBox.addView(stepCard("2", L10n.s("s2_t"), L10n.s("s2_b"),
+                    new String[]{L10n.s("btn_open_dev")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openDevSettings(); }
+                    }}));
+            stepsBox.addView(stepCard("3", L10n.s("s3_t"), L10n.s("s3_b"),
+                    new String[]{L10n.s("btn_copy")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { copy("andromitm-unlock", L10n.s("cmds_3")); }
+                    }}));
+            stepsBox.addView(stepCard("4", L10n.s("s4_t"), L10n.s("s4_b"),
+                    new String[]{L10n.s("btn_blackview")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openUrl("https://www.blackview.hk/"); }
+                    }}));
+            stepsBox.addView(stepCard("5", L10n.s("s5_t"), L10n.s("s5_b"),
+                    new String[]{L10n.s("btn_magisk"), L10n.s("btn_open_magisk")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { openUrl("https://github.com/topjohnwu/Magisk/releases"); }
+                    }, new View.OnClickListener() {
+                        public void onClick(View v) { openMagisk(); }
+                    }}));
+            stepsBox.addView(stepCard("6", L10n.s("s6_t"), L10n.s("s6_b"),
+                    new String[]{L10n.s("btn_copy")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { copy("andromitm-flash", L10n.s("cmds_6")); }
+                    }}));
+            stepsBox.addView(stepCard("7", L10n.s("s7_t"), L10n.s("s7_b"),
+                    new String[]{L10n.s("btn_test_root")},
+                    new View.OnClickListener[]{new View.OnClickListener() {
+                        public void onClick(View v) { testRoot(); }
+                    }}));
+        }
     }
 
     View stepCard(String num, String t, String b, String[] labels, View.OnClickListener[] handlers) {

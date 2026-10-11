@@ -10,7 +10,7 @@
 #     (platform-34 + build-tools 34.0.0)
 #   - keystore         : tokens/andromitm.keystore (+ keystore_pass.txt)
 #
-# Sortie : releases/RootWizard-v0.1.0.apk
+# Sortie : releases/RootWizard-v0.2.0.apk (multi-profils : Blackview/AOSP + Xiaomi/Redmi HyperOS)
 # ════════════════════════════════════════════════════════════════
 set -euo pipefail
 
@@ -27,8 +27,8 @@ PLATFORM="$SDK/platforms/android-34/android.jar"
 KS="${ANDROMITM_KS:-$REPO_ROOT/../tokens/andromitm.keystore}"
 KSPASS_FILE="${ANDROMITM_KS_PASS_FILE:-$REPO_ROOT/../tokens/keystore_pass.txt}"
 
-VERSION_NAME="${ANDROMITM_RW_VERSION:-0.1.0}"
-VERSION_CODE="${ANDROMITM_RW_CODE:-1}"
+VERSION_NAME="${ANDROMITM_RW_VERSION:-0.2.0}"
+VERSION_CODE="${ANDROMITM_RW_CODE:-2}"
 OUT="$RELEASES/RootWizard-v${VERSION_NAME}.apk"
 
 [ -x "$BT/aapt2" ] || { echo "aapt2 introuvable : $BT (cf. RESTART.md §3bis)"; exit 1; }

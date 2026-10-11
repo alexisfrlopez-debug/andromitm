@@ -81,11 +81,13 @@ Téléchargement : dossier [`releases/`](releases/) du repo ou page [Releases Gi
 - Lance bettercap v2.25 embarqué via `su` : **nécessite un appareil rooté** (voir RootWizard).
 - Appareils 64-bits-only : régler « chemin moteur custom » vers un bettercap aarch64.
 
-### RootWizard-v0.1.0.apk — root guidé (Blackview Xplore1 / Android 15)
+### RootWizard-v0.2.0.apk — root guidé multi-profils
+- Sélecteur de profil en haut de l'app : **Auto** (détecte la marque), **Blackview / AOSP**, **Xiaomi / Redmi**.
 - Détecte l'état : bootloader (verrouillé/orange), OEM unlocking, débogage USB, Magisk, root actif.
-- Guide pas à pas : sauvegarde → options développeur → déverrouillage bootloader (PC + fastboot, **efface les données**) → récupération d'`init_boot.img` (firmware Blackview exact) → patch Magisk v27+ → `fastboot flash init_boot` → vérification + test de root intégré.
-- Adaptatif : MediaTek (mtkclient en plan B), Unisoc, Qualcomm.
-- ⚠ Aucune APK ne peut rooter Android 15 en un clic réel ; RootWizard l'affiche et automatise le reste.
+- Profil **Blackview / AOSP** (ex. Xplore1 · DokeOS 4.2 / Android 15) : sauvegarde → options dev → fastboot flashing unlock → init_boot.img (firmware exact) → patch Magisk v27+ → fastboot flash init_boot → vérification.
+- Profil **Xiaomi / Redmi-POCO** (ex. Redmi Note 14 · HyperOS) : compte Mi + SIM → liaison « Statut Mi Unlock » → délai d'attente officiel (souvent 7 j, parfois 30+) → **Mi Unlock Tool** (PC Windows) → fastboot ROM .tgz → init_boot/boot.img patché → flash (+ astuce `vbmeta --disable-verity` anti-bootloop).
+- Adaptatif SoC : MediaTek (mtkclient en plan B), Unisoc, Qualcomm.
+- ⚠ Aucune APK ne peut rooter Android moderne en un clic réel ; RootWizard l'affiche et automatise le reste.
 
 ## 5. Sauvegardes
 
