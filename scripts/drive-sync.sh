@@ -32,7 +32,7 @@ rclone sync "${REPO_ROOT}/backup/" "${REMOTE}:backup/" \
 
 # 3) Copie du fichier de reprise à la racine du dossier de travail, s'il existe
 if [ -f "RESTART.md" ]; then
-  rclone copy "RESTART.md" "${REMOTE}:" --drive-overwrite
+  rclone copy "RESTART.md" "${REMOTE}:" --ignore-times
   echo "[andromitm] RESTART.md mis à jour à la racine du dossier de travail"
 fi
 
