@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0D1117</color>
+    <color name="surface">#161B22</color>
+    <color name="surface_alt">#1C2230</color>
+    <color name="border">#30363D</color>
+    <color name="txt">#C9D1D9</color>
+    <color name="txt_dim">#8B949E</color>
+    <color name="accent">#4AF626</color>
+    <color name="accent_dim">#1F6F1F</color>
+    <color name="blue">#58A6FF</color>
+    <color name="red">#F85149</color>
+    <color name="amber">#D29922</color>
+    <color name="state_running">#4AF626</color>
+    <color name="state_starting">#D29922</color>
+    <color name="state_error">#F85149</color>
+    <color name="state_idle">#8B949E</color>
+    <color name="log_info">#C9D1D9</color>
+    <color name="log_warn">#D29922</color>
+    <color name="log_error">#F85149</color>
+</resources>

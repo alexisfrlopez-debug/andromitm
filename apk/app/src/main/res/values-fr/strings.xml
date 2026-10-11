@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroMITM</string>
+
+    <!-- Autorisation -->
+    <string name="auth_title">Déclaration d\'usage autorisé</string>
+    <string name="auth_statement">Je certifie utiliser AndroMITM uniquement sur des systèmes et réseaux dont je suis propriétaire ou pour lesquels je dispose d\'une autorisation écrite (mission de test d\'intrusion, labo, enseignement). Je suis seul responsable de mon usage. Intercepter le trafic d\'autrui sans autorisation est un délit.</string>
+    <string name="auth_confirm">Je comprends et j\'accepte cette déclaration</string>
+    <string name="auth_accept">Déverrouiller la suite</string>
+    <string name="auth_decline">Refuser et quitter</string>
+    <string name="auth_foot">Les modules d\'attaque restent verrouillés tant que cette déclaration n\'est pas acceptée. Tout ce que vous faites reste sur cet appareil.</string>
+
+    <!-- Navigation -->
+    <string name="nav_dash">Pilotage</string>
+    <string name="nav_targets">Cibles</string>
+    <string name="nav_logs">Journal</string>
+
+    <!-- Moteur -->
+    <string name="engine_start">Démarrer le moteur</string>
+    <string name="engine_stop">Arrêter le moteur</string>
+    <string name="engine_starting">Démarrage du moteur…</string>
+    <string name="engine_running">Moteur actif</string>
+    <string name="engine_idle">Moteur arrêté</string>
+    <string name="engine_error">Erreur moteur</string>
+    <string name="iface_label">Interface réseau</string>
+    <string name="iface_count">%d interfaces détectées</string>
+    <string name="root_ok">Root : disponible (su uid=0)</string>
+    <string name="root_missing">Root : INDISPONIBLE</string>
+    <string name="err_no_root">Le root (su) est requis pour lancer le moteur.</string>
+    <string name="err_engine_missing">Binaire moteur introuvable ou non exécutable.</string>
+    <string name="err_api_timeout">Le moteur n\'a pas ouvert son API locale à temps — consulter le journal.</string>
+    <string name="err_no_targets">Sélectionne d\'abord au moins une cible dans l\'onglet Cibles.</string>
+    <string name="engine_path_title">Chemin moteur personnalisé</string>
+    <string name="engine_path_hint">Chemin complet d\'un binaire bettercap alternatif (ex. build aarch64 installé via Termux) pour les appareils 64-bits only. Laisser vide pour utiliser le moteur embarqué.</string>
+
+    <!-- Modules -->
+    <string name="mod_arp">Spoofing ARP</string>
+    <string name="mod_arp_desc">Redirige le trafic des cibles sélectionnées vers cet appareil</string>
+    <string name="mod_dns">Spoofing DNS</string>
+    <string name="mod_dns_desc">Répond aux requêtes DNS avec l\'adresse choisie</string>
+    <string name="mod_sniff">Sniffer (net.sniff)</string>
+    <string name="mod_sniff_desc">Affiche les requêtes/réponses HTTP et métadonnées</string>
+    <string name="dns_dialog_title">Configuration du spoofing DNS</string>
+    <string name="dns_domains">Domaines à usurper (séparés par des espaces)</string>
+    <string name="dns_ip">Rediriger vers l\'IP</string>
+
+    <!-- Cibles -->
+    <string name="targets_title">Hôtes découverts</string>
+    <string name="targets_count">%d hôtes</string>
+    <string name="targets_refresh">Rafraîchir (table ARP)</string>
+    <string name="targets_hint">Coche les appareils que tu es autorisé à tester — ils deviennent les cibles du spoofing ARP.</string>
+
+    <!-- Journal -->
+    <string name="logs_clear">Effacer</string>
+
+    <!-- Guide CA -->
+    <string name="ca_title">Interception HTTPS — certificat CA</string>
+    <string name="ca_message">Pour les flux HTTPS, installe le certificat CA du moteur sur l\'appareil CIBLE (Paramètres → Sécurité → Plus de paramètres de sécurité → Chiffrement et identifiants → Installer un certificat → Autorité de certification). Le certificat est servi par le moteur à la première interception HTTPS. Les apps avec épinglage de certificat ne seront pas interceptées.</string>
+
+    <!-- Divers -->
+    <string name="common_enable">Activer</string>
+    <string name="common_cancel">Annuler</string>
+    <string name="common_save">Enregistrer</string>
+    <string name="common_saved">Enregistré</string>
+    <string name="android_badge">Android</string>
+</resources>

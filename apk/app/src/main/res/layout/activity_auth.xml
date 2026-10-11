@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Andro MITM"
+            android:textColor="@color/accent"
+            android:textSize="28sp"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_title"
+            android:textColor="@color/txt"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surface_alt"
+            android:padding="16dp"
+            android:text="@string/auth_statement"
+            android:textColor="@color/txt"
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.4" />
+
+        <CheckBox
+            android:id="@+id/auth_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/auth_confirm"
+            android:textColor="@color/txt" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/auth_accept"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/auth_accept" />
+
+            <Button
+                android:id="@+id/auth_decline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/auth_decline"
+                style="?attr/materialButtonOutlinedStyle" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/auth_foot"
+            android:textColor="@color/txt_dim"
+            android:textSize="12sp"
+            android:lineSpacingMultiplier="1.3" />
+    </LinearLayout>
+</ScrollView>

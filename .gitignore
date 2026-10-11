@@ -19,3 +19,10 @@ session-*.jsonl
 Thumbs.db
 *.swp
 __pycache__/
+
+# --- APK (build Android) ---
+apk/.gradle/
+apk/app/build/
+apk/local.properties
+*.apk
+*.keystore

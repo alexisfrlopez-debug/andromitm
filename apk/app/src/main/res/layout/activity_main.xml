@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <!-- Barre supérieure -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Andro MITM"
+            android:textColor="@color/accent"
+            android:textSize="18sp"
+            android:letterSpacing="0.12" />
+
+        <TextView
+            android:id="@+id/tv_engine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/engine_idle"
+            android:textColor="@color/state_idle"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- ─── Onglet Pilotage ─── -->
+    <FrameLayout
+        android:id="@+id/page_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!-- Carte système -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/surface"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SYSTÈME"
+                        android:textColor="@color/blue"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.2" />
+
+                    <TextView
+                        android:id="@+id/tv_root"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/root_missing"
+                        android:textColor="@color/state_error"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_iface_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/iface_label"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/sp_iface"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/surface_alt" />
+
+                    <TextView
+                        android:id="@+id/tv_engine_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="—"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/btn_engine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/engine_start" />
+                </LinearLayout>
+
+                <!-- Carte modules -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/surface"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MODULES"
+                        android:textColor="@color/blue"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.2" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/sw_arp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:enabled="false"
+                        android:text="@string/mod_arp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mod_arp_desc"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="11sp" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/sw_dns"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:enabled="false"
+                        android:text="@string/mod_dns" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mod_dns_desc"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="11sp" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/sw_sniff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:enabled="false"
+                        android:text="@string/mod_sniff" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mod_sniff_desc"
+                        android:textColor="@color/txt_dim"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Carte réglages -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/surface"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <Button
+                        android:id="@+id/btn_engine_path"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/engine_path_title"
+                        android:textSize="11sp" />
+
+                    <Button
+                        android:id="@+id/btn_ca_guide"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:text="@string/ca_title"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <!-- ─── Onglet Cibles ─── -->
+    <FrameLayout
+        android:id="@+id/page_targets"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/targets_hint"
+                android:textColor="@color/txt_dim"
+                android:textSize="12sp"
+                android:lineSpacingMultiplier="1.3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_targets_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/targets_count"
+                    android:textColor="@color/txt"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_refresh_hosts"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/targets_refresh"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- ─── Onglet Journal ─── -->
+    <FrameLayout
+        android:id="@+id/page_logs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/btn_clear_logs"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/logs_clear"
+                android:textSize="11sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_events"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Navigation basse -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        app:itemIconTint="@color/accent"
+        app:itemTextColor="@color/txt"
+        app:menu="@menu/bottom_nav" />
+</LinearLayout>

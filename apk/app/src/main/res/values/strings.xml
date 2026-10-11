@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroMITM</string>
+
+    <!-- Autorisation -->
+    <string name="auth_title">Authorized-use statement</string>
+    <string name="auth_statement">I certify that I will use AndroMITM only on systems and networks I own or have written authorization to test (pentest engagement, lab, teaching). I am solely responsible for my usage. Intercepting other people\'s traffic without authorization is a crime.</string>
+    <string name="auth_confirm">I understand and accept this statement</string>
+    <string name="auth_accept">Unlock the suite</string>
+    <string name="auth_decline">Decline and exit</string>
+    <string name="auth_foot">Attack modules stay locked until this statement is accepted. Everything you do stays on this device.</string>
+
+    <!-- Navigation -->
+    <string name="nav_dash">Control</string>
+    <string name="nav_targets">Targets</string>
+    <string name="nav_logs">Live log</string>
+
+    <!-- Moteur -->
+    <string name="engine_start">Start engine</string>
+    <string name="engine_stop">Stop engine</string>
+    <string name="engine_starting">Starting engine…</string>
+    <string name="engine_running">Engine running</string>
+    <string name="engine_idle">Engine stopped</string>
+    <string name="engine_error">Engine error</string>
+    <string name="iface_label">Network interface</string>
+    <string name="iface_count">%d interfaces detected</string>
+    <string name="root_ok">Root: available (su uid=0)</string>
+    <string name="root_missing">Root: NOT available</string>
+    <string name="err_no_root">Root is required to run the engine (su).</string>
+    <string name="err_engine_missing">Engine binary not found or not executable.</string>
+    <string name="err_api_timeout">Engine did not open its local API in time — check the log.</string>
+    <string name="err_no_targets">Select at least one target in the Targets tab first.</string>
+    <string name="engine_path_title">Custom engine path</string>
+    <string name="engine_path_hint">Full path to an alternative bettercap binary (e.g. aarch64 build installed via Termux) for 64-bit-only devices. Leave empty to use the embedded engine.</string>
+
+    <!-- Modules -->
+    <string name="mod_arp">ARP spoofing</string>
+    <string name="mod_arp_desc">Redirect selected targets\' traffic through this device</string>
+    <string name="mod_dns">DNS spoofing</string>
+    <string name="mod_dns_desc">Answer DNS queries with a chosen address</string>
+    <string name="mod_sniff">Sniffer (net.sniff)</string>
+    <string name="mod_sniff_desc">Show HTTP requests/responses and credentials metadata</string>
+    <string name="dns_dialog_title">DNS spoofing configuration</string>
+    <string name="dns_domains">Domains to spoof (space separated)</string>
+    <string name="dns_ip">Redirect to IP</string>
+
+    <!-- Cibles -->
+    <string name="targets_title">Discovered hosts</string>
+    <string name="targets_count">%d hosts</string>
+    <string name="targets_refresh">Refresh (ARP table)</string>
+    <string name="targets_hint">Tick the boxes of the devices you are authorized to test — they become ARP spoofing targets.</string>
+
+    <!-- Journal -->
+    <string name="logs_clear">Clear</string>
+
+    <!-- Guide CA -->
+    <string name="ca_title">HTTPS interception — CA certificate</string>
+    <string name="ca_message">For HTTPS flows, install the engine CA certificate on the TARGET device (Settings → Security → More security settings → Encryption &amp; credentials → Install a certificate → CA certificate). The certificate is served by the engine when it first intercepts HTTPS; you can also pull it from the engine\'s folder. Apps with certificate pinning will not be intercepted.</string>
+
+    <!-- Divers -->
+    <string name="common_enable">Enable</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_save">Save</string>
+    <string name="common_saved">Saved</string>
+    <string name="android_badge">Android</string>
+</resources>

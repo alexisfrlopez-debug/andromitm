@@ -2,18 +2,24 @@
 
 > **Dépose à la racine du dossier de travail Drive.**
 > Objectif : permettre la reprise du projet **à jour** dans une nouvelle session (IA ou humain) en moins de 2 minutes.
-> Dernière mise à jour : 2026-10-11 · version 0.1.0 · état : **v1 fonctionnelle, testée en mode simulation**
+> Dernière mise à jour : 2026-10-11 · version **0.2.0 (suite Node + APK Android)** · état : **v1 fonctionnelle, APK compilée et signée**
 
 ---
 
 ## 1. Le projet en 30 secondes
 
-**AndroMITM** = suite de pentest MITM pour Android, 100% interface graphique.
-- **Cœur** : backend Node.js (tourne dans Termux/Android ou desktop Linux) + dashboard web sombre style Kali (i18n FR/EN) servi sur `http://127.0.0.1:8443`.
-- **Coquille Electron** incluse pour le mode desktop (Electron ne tourne PAS nativement sous Android — sur le téléphone, le dashboard web est l'interface, ouverte dans Chrome).
-- **Modules** : découverte réseau (nmap/arp-scan), spoofing ARP (bettercap/arpspoof), spoofing DNS, interception HTTPS (mitmdump + addon Python), capture pcap (tcpdump), rapports JSON+HTML.
-- **Sécurité intégrée** : déclaration d'usage autorisé obligatoire à la première ouverture (les modules d'attaque restent verrouillés sinon), restauration automatique d'`ip_forward`, token API anti-CSRF, écoute localhost par défaut.
-- **Mode simulation** (`ANDROMITM_SIM=1`) : démo/développement sans aucun binaire externe ni root.
+**AndroMITM** = suite de pentest MITM pour Android, 100% interface graphique, **deux livrables** :
+
+### A. APK Android native (v0.2.0) — `AndroMITM-v0.2.0.apk`
+- Java + Material 3, thème sombre Kali, i18n FR/EN (suivant la langue de l'appareil).
+- Écran de **déclaration d'usage autorisé** au premier lancement → cockpit 3 onglets : **Pilotage** (moteur + switches ARP/DNS/Sniffer), **Cibles** (hôtes découverts, badge Android, sélection au doigt), **Journal** (flux live).
+- **Moteur bettercap v2.25 android-armv7 EMBARQUÉ** dans l'APK (jniLibs + libusb-1.0.so) : l'app le lance via `su`, lui parle en REST API locale (127.0.0.1:8081) et consomme `/api/events` en continu.
+- Découverte live via `net.recon`, ARP/DNS spoof et net.sniff pilotés par switches ; `ip_forward` activé au lancement et **restauré à l'arrêt**.
+- Paramètre **« chemin moteur custom »** pour les appareils 64-bits-only (le binaire embarqué est 32-bit) : pointer vers un bettercap aarch64 compilé/obtenu par ailleurs (ex. via Termux).
+- Signature : keystore self-signed `andromitm.keystore` (dossier Drive « tokens » + local `tokens/`, mot de passe dans `keystore_pass.txt`). SHA-256 cert : `df934caaa0d80970c475f21c8a08813ef66b5840b11e79b227021e5df656a3b3`.
+
+### B. Suite Node/Termux (v0.1.0) — dashboard web
+Cœur Node.js (Termux ou desktop) + dashboard web sombre i18n FR/EN sur `http://127.0.0.1:8443` + coquille Electron. Modules : discovery (nmap), ARP (bettercap/arpspoof), DNS, proxy mitmproxy + addon, capture tcpdump, rapports JSON+HTML, mode simulation `ANDROMITM_SIM=1`.
 
 ## 2. Où sont les choses
 
@@ -76,22 +82,32 @@ bash scripts/drive-sync.sh                        # Drive (zip versionné + andr
 
 ## 5. Historique & roadmap
 
-### Jalons réalisés (v0.1.0)
-1. Scaffold projet (package.json, .gitignore, .env.example)
-2. Backend : moteur de modules, sessions, autorisation, 6 modules MITM, mode SIM
-3. Dashboard web i18n FR/EN + WebSocket live
-4. Coquille Electron + config rclone modèle
-5. Scripts : install-termux, run-termux, drive-sync, git-push
-6. Documentation FR/EN (README, INSTALL, usage-fr, usage-en), licence MIT + notice légale
+### Jalons réalisés
+1. **v0.1.0** — Scaffold projet (package.json, .gitignore, .env.example)
+2. **v0.1.0** — Backend : moteur de modules, sessions, autorisation, 6 modules MITM, mode SIM
+3. **v0.1.0** — Dashboard web i18n FR/EN + WebSocket live
+4. **v0.1.0** — Coquille Electron + config rclone modèle
+5. **v0.1.0** — Scripts : install-termux, run-termux, drive-sync, git-push
+6. **v0.1.0** — Documentation FR/EN (README, INSTALL, usage-fr, usage-en), licence MIT + notice légale
+7. **v0.1.0** — RESTART.md (ce fichier)
+8. **v0.2.0** — **APK Android native compilée et signée** : cockpit Material 3, moteur bettercap v2.25 embarqué (armv7 + libusb), REST API + flux d'événements, cibles au doigt, i18n FR/EN. Sources dans `apk/` ; build : `cd apk && gradle assembleRelease` (JDK 17 + SDK Android requis, cf. §3bis).
 
-### Prochaines étapes proposées (v0.2)
-- [ ] Test réel sur appareil Android rooté (bettercap arm64, tcpdump, mitmdump Termux)
-- [ ] Détection SSL-pinning : section guide + intégration éventuelle (hors périmètre v1)
+### Reconstruire l'environnement de build APK (§3bis)
+- JDK 17 complet (Temurin) : `/home/z/android-build/jdk-17.0.20.1+1` (tarball Adoptium, pas d'apt)
+- Android SDK : `/home/z/android-build/android-sdk` (cmdline-tools + platform-34 + build-tools 34.0.0)
+- Gradle 8.7 : `/home/z/android-build/gradle-8.7`
+- `apk/local.properties` → `sdk.dir=…` ; keystore lu dans `../../../tokens/`
+- Commande : `cd apk && JAVA_HOME=/home/z/android-build/jdk-17.0.20.1+1 gradle assembleRelease --no-daemon`
+- ⚠ bettercap v2.41+ ne publie plus de binaires ARM linux — binaire embarqué = release officielle android_armv7 v2.25 (+ libusb 1.0.30 arm de Termux)
+
+### Prochaines étapes proposées (v0.3)
+- [ ] Test réel de l'APK sur appareil Android rooté armv7/arm64-avec-32bit (bettercap v2.25, net.recon, arp.spoof)
+- [ ] Compilation d'un bettercap aarch64 récent pour appareils 64-bits-only (CGO + libpcap cross) — alimente le « chemin moteur custom »
+- [ ] APK : onglet Flux HTTP (vue dédiée net.sniff), export du journal, thème clair optionnel
+- [ ] Détection SSL-pinning : section guide + intégration éventuelle (hors périmètre)
 - [ ] Module « identité de l'appareil » : fingerprint HTTP/DHCP des cibles Android
 - [ ] Capture HTTP complète optionnelle (corps de requêtes) avec chiffrement du dossier de session
-- [ ] Export PCAPNG + intégration tshark pour stats de capture
 - [ ] Authentification dashboard (mot de passe local) pour le mode `ANDROMITM_HOST=0.0.0.0`
-- [ ] Build Electron arm64 (pi/boîtier) + script d'empaquetage
 - [ ] Rotation des tokens Drive/GitHub (voir section 6)
 
 ## 6. Sécurité des tokens — règles permanentes

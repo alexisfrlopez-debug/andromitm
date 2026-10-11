@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thème sombre Kali, accent vert -->
+    <style name="Theme.AndroMITM" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorPrimaryContainer">@color/accent_dim</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/txt</item>
+        <item name="colorSurfaceVariant">@color/surface_alt</item>
+        <item name="colorOnSurfaceVariant">@color/txt_dim</item>
+        <item name="colorOutline">@color/border</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+</resources>
