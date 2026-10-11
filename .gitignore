@@ -1,0 +1,21 @@
+# --- Secrets & locaux (NE JAMAIS committer) ---
+.env
+tokens/
+*.token
+*token*.json
+client_secret*.json
+service_account*.json
+
+# --- Runtime ---
+node_modules/
+data/
+backend/data/
+*.pcap
+*.pcapng
+session-*.jsonl
+
+# --- OS / éditeurs ---
+.DS_Store
+Thumbs.db
+*.swp
+__pycache__/
