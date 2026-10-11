@@ -1,0 +1,13 @@
+{
+  "name": "andromitm-shell",
+  "version": "0.1.0",
+  "description": "Coquille Electron du dashboard AndroMITM (desktop uniquement — pas de support Android)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,21 @@
+# AndroMITM — modèle de configuration rclone
+# Destination : dossier de travail Drive (root_folder_id = ID du dossier).
+#
+# Installation :
+#   1. Copier ce fichier vers ~/.config/rclone/rclone.conf  (Termux : $PREFIX/etc/rclone/rclone.conf
+#      ou ~/.config/rclone/rclone.conf)
+#   2. Remplacer les placeholders par les valeurs du dossier Drive « tokens » :
+#      - client_id / client_secret : client_secret_*.json
+#      - refresh_token : oauth_token_relais_*.json
+#   3. Tester : rclone lsd gdrive:
+#   4. Sauvegarder : bash scripts/drive-sync.sh
+#
+# ⚠ Ne jamais committer ce fichier ni l'envoyer dans le repo.
+
+[gdrive]
+type = drive
+client_id = VOTRE_CLIENT_ID.apps.googleusercontent.com
+client_secret = VOTRE_CLIENT_SECRET
+scope = drive
+root_folder_id = 1Ps1dQJFWgM6H_xpYRSzTqKuOtVNsdDYj
+token = {"access_token":"","token_type":"Bearer","refresh_token":"VOTRE_REFRESH_TOKEN","expiry":"1970-01-01T00:00:00.000000000Z"}
