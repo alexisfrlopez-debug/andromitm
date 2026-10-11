@@ -38,6 +38,13 @@ rclone sync "${REPO_ROOT}/backup/" "${REMOTE}:backup/" \
   --backup-dir "${REMOTE}:backup/old/${STAMP}" \
   --exclude "old/**"
 
+# 2bis) Source navigable → gdrive:andromitm-current/ (hors artefacts)
+rclone sync "${REPO_ROOT}/" "${REMOTE}:andromitm-current/" \
+  --exclude "node_modules/**" --exclude "backup/**" --exclude "env/**" \
+  --exclude "tokens/**" --exclude ".env" --exclude "data/**" \
+  --exclude "apk/.gradle/**" --exclude "apk/app/build/**" \
+  --exclude "apk-rootwizard/build/**" --exclude ".git/**" --exclude "*.pcap"
+
 # 3) APK signées → gdrive:releases/
 if [ -d releases ] && ls releases/*.apk >/dev/null 2>&1; then
   rclone copy "${REPO_ROOT}/releases/" "${REMOTE}:releases/"
